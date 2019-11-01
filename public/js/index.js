@@ -4,18 +4,21 @@ socket.on('connect', function () {
 });
 
 socket.on('newMessage', function (message) {
-	console.log('New message ', message);
+
+	let formattedTime = moment(message.createdAt).format('h:mm a');
 	let li = $('<li></li>');
-	li.text(`${message.from}: ${message.text}`);
+	li.text(`${message.from} ${formattedTime}: ${message.text}`);
 
 	$('#message-area').append(li);
 });
 
 socket.on('newLocationMessage', function (locationMessage) {
+
+	let formattedTime = moment(locationMessage.createdAt).format('h:mm a');
 	let li = $('<li></li>');
 	let a = $('<a target="_blank">Here I am</a>');
 
-	li.text(`${locationMessage.from}: `);
+	li.text(`${locationMessage.from} ${formattedTime}: `);
 	a.attr('href',locationMessage.url);
 
 	li.append(a);
