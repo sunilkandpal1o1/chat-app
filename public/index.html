@@ -2,19 +2,33 @@
 <html>
     <head>
         <meta charset="utf-8"></meta>
+        <link rel="stylesheet" href="/css/styles.css">
     </head>
 
-    <body>
-        <p>Welcome to node chat application</p>
+    <body class="chat">
 
-        <ol id="message-area"></ol>
+    	<div class="chat__sidebar">
+    		<h3>People</h3>
+    		<div id="users">
+    			
+    		</div>
+    	</div>
 
-        <form id="message-form">
-        	<input name="message" type="text" placeholder="Message" />
-        	<button>Send</button>
-        </form>
+    	<div class="chat__main">
+    		<ol id="message-area" class="chat__messages"></ol>
+    		<div class="chat__footer">
+    			<form id="message-form">
+        			<input name="message" type="text" placeholder="Message" autofocus autocomplete='off'/>
+        			<button>Send</button>
+        		</form>
 
-        <button id="send-location">Send Location</button>
+        		<button id="send-location">Send Location</button>
+    		</div>
+    		
+    	</div>
+        
+
+        
 
         <script src="/socket.io/socket.io.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
