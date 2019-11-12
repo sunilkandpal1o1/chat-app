@@ -19,6 +19,19 @@ app.use(express.static(publicPath));
 
 const users = new Users();
 
+const userExists = (username, room) => {
+	let exists = false;
+	users.users.forEach( (user) => {
+		if(user.name.toLowerCase() == username.toLowerCase()
+			&& user.room == room.toLowerCase()) {
+			exists = true;
+		}
+	});
+	//console.log(exists);
+
+	return exists;
+}
+
 server.listen(port, ()=>{
     console.log(`Listing on port ${port}`);
 });
@@ -31,12 +44,18 @@ io.on('connection', ( socket ) => {
 			return callback('username or room name in not valid');
 		}
 
-		socket.join(param.room);
+		if(userExists(param.name, param.room)) {
+			return callback('username already exists');
+		}
+
+		let room = param.room.toLowerCase();
+
+		socket.join(room);
 		users.removeUser(socket.id);
-		users.addUser(socket.id, param.name, param.room);
+		users.addUser(socket.id, param.name, room);
 		
 
-		io.to(param.room).emit('updateUserList', users.getUserList(param.room));
+		io.to(room).emit('updateUserList', users.getUserList(room));
 
 		//io.emit -> io.to('room name').emit
 		//socket.broadcast.emit -> socket.broadcast.to('room name').emit
@@ -44,7 +63,7 @@ io.on('connection', ( socket ) => {
 
 		socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
 
-		socket.broadcast.to(param.room).emit('newMessage', generateMessage('Admin', `${param.name} has joined`));
+		socket.broadcast.to(room).emit('newMessage', generateMessage('Admin', `${param.name} has joined`));
 
 		callback();
 	});
