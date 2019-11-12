@@ -193,3 +193,9 @@ button:disabled {
     margin-right: 0px;
   }
 }
+
+#room {
+  display: flex;
+  background-color: #d9e6ef;
+  text-align: center;
+}

@@ -24,6 +24,9 @@ socket.on('connect', function () {
     console.log('Connected to server');
     const param = $.deparam(window.location.search);
 
+    let roomDiv = $('#room');
+    roomDiv.append('<h2></h2>').text('Room: '+param.room);
+
     socket.emit('join', param, function (err) {
     	if(err){
     		alert(err);
